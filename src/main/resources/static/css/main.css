@@ -1,0 +1,119 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+body {
+  background-color: #f8f2ec;
+}
+
+a:link {
+  color: #996633;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:visited{
+  color: #996633;
+}
+
+a:hover {
+  color: #a3ca56;
+}
+
+#books {
+  border-collapse: collapse;
+}
+
+.author, .title {
+  width: 17.5%;
+}
+
+.publisher, .reviews, .edit {
+  width: 9%;
+}
+
+.pages, .year {
+  width: 7%;
+  text-align: center;
+}
+
+.date, .reads {
+  width: 9%;
+  text-align: center;
+}
+
+.owned {
+  width: 6%;
+  text-align: center;
+}
+
+#books td, th {
+  border-bottom: 1px solid #ddd;
+  padding: 4px;
+}
+
+th {
+  background-color: #a3ca56;
+  text-align: center;
+}
+
+.nowrap {
+  max-width: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+img.fixed {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 20%;
+}
+
+textarea {
+  resize: none;
+}
+
+form {
+  display: inline;
+}
+
+#search {
+  float: right;
+}
+
+.sort_asc {
+  border: solid black;
+  background-color: #a3ca56;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 6px 3px 3px 6px;
+  vertical-align: middle;
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+
+.sort_desc {
+  border: solid black;
+  background-color: #a3ca56;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 6px 3px 3px 6px;
+  vertical-align: middle;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.sort, .filter {
+  border: none;
+  padding: 0;
+  background: none;
+  font-size: 15px;
+}

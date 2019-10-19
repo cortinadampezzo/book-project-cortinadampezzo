@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book project</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="http://localhost:8001/css/main.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="http://localhost:8001/open_book.ico" />
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="http://localhost:8001/js/main.js" defer></script>
+</head>
+<body>
+
+    {% for book in book_details %}
+
+    <div style="width:800px" class="container justify-content-center">
+        <div class="row">
+            <a href='/'>
+                <img style="width:20%" src="http://localhost:8001/open_book.png">
+            </a>
+        </div>
+        <div class="row">
+            <div class="col-9">
+                <h4>{{ book.author }}</h4>
+            </div>
+            <div class="col-3">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-9">
+                <h1>{{ book.title }}</h1>
+            </div>
+            <div style="text-align:right" class="col-3">
+
+                <!-- Edit book modal -->
+                <span data-toggle="tooltip" data-placement="top" title="Edit book">
+                    <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#editBookModal">
+                        <i class="material-icons">
+                            edit
+                        </i>
+                    </button>
+                </span>
+                <div style="text-align:left" class="modal fade" id="editBookModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Edit book</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/book/{{ book.id }}/edit" method="POST">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="inputAuthor">Author *</label>
+                                            <input type="text" name="author" maxlength="60" value="{{ book.author }}" required class="form-control" id="inputAuthor">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="inputTitle">Title *</label>
+                                            <input type="text" name="title" maxlength="60" value="{{ book.title }}"required class="form-control" id="inputTitle">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <label for="inputPublisher">Publisher *</label>
+                                            <input type="text" name="publisher" maxlength="30" value="{{ book.publisher }}" required class="form-control" id="inputPublisher">
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label for="inputYear">Year *</label>
+                                            <input type="number" name="year" min="1800" max="2100" value="{{ book.year }}" required class="form-control" id="inputYear">
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label for="inputPages">Pages *</label>
+                                            <input type="number" name="pages" min="1" max="10000" value="{{ book.pages }}" required class="form-control" id="inputPages">
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputIsbn">ISBN</label>
+                                            <input type="text" name="isbn" minlength="10" maxlength="13" value="{{ book.isbn }}" class="form-control" id="inputIsbn">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="inputDate">Purchase date</label>
+                                            <input type="date" name="date" value="{{ book.date }}" class="form-control" id="inputDate">
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputPlace">Purchase place</label>
+                                            <input type="text" name="place" value="{{ book.place }}" class="form-control" id="inputPlace">
+                                        </div>
+                                        <div class="form-check col-md-2">
+                                            <label for="inputOwned">Owned</label>
+                                            {% if book.owned %}
+                                            <input type="checkbox" name="owned" checked class="form-control" id="inputOwned">
+                                            {% else %}
+                                            <input type="checkbox" name="owned" class="form-control" id="inputOwned">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            * required
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Edit book</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End edit book modal -->
+
+                <!-- Delete book modal -->
+                <span data-toggle="tooltip" data-placement="top" title="Delete book">
+                        <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteBookModal">
+                            <i class="material-icons">
+                                delete
+                            </i>
+                        </button>
+                </span>
+                <div style="text-align:left" class="modal fade" id="deleteBookModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Delete book</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/book/{{ book.id }}/delete" method="POST">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            Are you sure you want to delete this book?
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End delete book modal -->
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-9">
+                {{ book.publisher }} | {{ book.year }} | {{ book.pages }} pages
+                {% if book.isbn %} | ISBN: {{ book.isbn }} {% endif %}
+            </div>
+            <div class="col-3">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-9">
+                {% if book.date %} Purchase date: {{ book.date }} {% endif %}
+                {% if book.date and book.place %} | {% endif %}
+                {% if book.place %} Purchase place: {{ book.place }} {% endif %}
+            </div>
+            <div class="col-3">
+            </div>
+        </div>
+        <div class="row mt-5 border-bottom border-dark my-3">
+            <div class="col-9">
+                <h1>Reads</h1>
+            </div>
+            <div style="text-align:right" class="col-3">
+                <form action='/book/{{ book.id }}/read' method='POST'>
+
+                    <!-- Add read modal -->
+                    <span data-toggle="tooltip" data-placement="top" title="Add new read">
+                        <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#addReadModal">
+                            <i class="material-icons">
+                                menu_book
+                            </i>
+                        </button>
+                    </span>
+                    <div style="text-align:left" class="modal fade" id="addReadModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Add read</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="/book/{{ book.id }}/read/{{ read.id }}/edit" method="POST">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="inputReadStartDate">Start read</label>
+                                                <input type="date" name="startDate" value="{{ read.startDate }}" class="form-control" id="inputReadStartDate">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="inputReadEndDate">End read</label>
+                                                <input type="date" name="endDate" value="{{ read.endDate }}" class="form-control" id="inputReadEndDate">
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Add read</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End add read modal -->
+
+                </form>
+            </div>
+        </div>
+
+        {% for read in read_details %}
+        <div class="row">
+            <div class="col-9">
+                {% if read.startDate or read.endDate %}
+                    {% if read.startDate %}
+                        {{ read.startDate }}
+                    {% else %}
+                        unknown
+                    {% endif %}
+                    {% if read.endDate %}
+                        - {{ read.endDate }}
+                    {% else %}
+                        - unknown
+                    {% endif %}
+                {% else %}
+                    unknown
+                {% endif %}
+            </div>
+            <div style="text-align:right" class="col-3">
+
+                <!-- Edit read modal -->
+                <span data-toggle="tooltip" data-placement="top" title="Edit read">
+                    <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#editReadModal{{ read.id }}">
+                        <i class="material-icons">
+                            edit
+                        </i>
+                    </button>
+                </span>
+                <div style="text-align:left" class="modal fade" id="editReadModal{{ read.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Edit read</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/book/{{ book.id }}/read/{{ read.id }}/edit" method="POST">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="inputReadStartDate">Start read</label>
+                                            <input type="date" name="startDate" value="{{ read.startDate }}" class="form-control" id="inputReadStartDate">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="inputReadEndDate">End read</label>
+                                            <input type="date" name="endDate" value="{{ read.endDate }}" class="form-control" id="inputReadEndDate">
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Edit read</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End edit read modal -->
+
+                <!-- Delete read modal -->
+                <span data-toggle="tooltip" data-placement="top" title="Delete read">
+                        <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteReadModal{{ read.id }}">
+                            <i class="material-icons">
+                                delete
+                            </i>
+                        </button>
+                </span>
+                <div style="text-align:left" class="modal fade" id="deleteReadModal{{ read.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Delete read</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/book/{{ book.id }}/read/{{ read.id }}/delete" method="POST">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            Are you sure you want to delete this read?
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End delete read modal -->
+
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="row mt-5 border-bottom border-dark my-3">
+            <div class="col-9">
+                <h1>Reviews</h1>
+            </div>
+            <div style="text-align:right" class="col-3">
+
+                <!-- Add review modal -->
+                <span data-toggle="tooltip" data-placement="top" title="Add new review">
+                    <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#addReviewModal">
+                        <i class="material-icons">
+                            rate_review
+                        </i>
+                    </button>
+                </span>
+                <div style="text-align:left" class="modal fade" id="addReviewModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Add review</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/book/{{ book.id }}/review" method="POST">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="inputRating">Rating *</label>
+                                            <input type="number" name="rating" min="1" max="10" required class="form-control" id="inputRating">
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="inputReviewText">Review *</label>
+                                            <textarea name="reviewText" maxlength="5000" required class="form-control" rows="10" id="inputReviewText"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            * required
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Add review</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End add review modal -->
+
+            </div>
+        </div>
+
+        {% for review in review_details %}
+        <div class="row">
+            <div class="col-9">
+                <h3>{{ review.rating }}/10</h3>
+            </div>
+            <div style="text-align:right" class="col-3">
+
+                <!-- Edit review modal -->
+                <span data-toggle="tooltip" data-placement="top" title="Edit review">
+                    <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#editReviewModal{{ review.id }}">
+                        <i class="material-icons">
+                            edit
+                        </i>
+                    </button>
+                </span>
+                <div style="text-align:left" class="modal fade" id="editReviewModal{{ review.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Edit review</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/book/{{ book.id }}/review/{{ review.id }}/edit" method="POST">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="inputRating">Rating *</label>
+                                            <input type="number" name="rating" min="1" max="10" value="{{ review.rating }}" required class="form-control" id="inputRating">
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="inputReviewText">Review *</label>
+                                            <textarea name="reviewText" maxlength="5000" required class="form-control" rows="10" id="inputReviewText">{{ review.reviewText }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            * required
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Edit Review</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End edit review modal -->
+
+                <!-- Delete review modal -->
+                <span data-toggle="tooltip" data-placement="top" title="Delete review">
+                        <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteReviewModal{{ review.id }}">
+                            <i class="material-icons">
+                                delete
+                            </i>
+                        </button>
+                </span>
+                <div style="text-align:left" class="modal fade" id="deleteReviewModal{{ review.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Delete review</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/book/{{ book.id }}/review/{{ review.id }}/delete" method="POST">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            Are you sure you want to delete this review?
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End delete review modal -->
+
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-9">
+                {% autoescape false %}
+                    {{ review.reviewText|replace("\r\n", "<br/>") | replace("_%", "</i>") | replace("%_", "<i>") }}
+                {% endautoescape %}
+            </div>
+            <div class="col-3">
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</body>
+</html>
